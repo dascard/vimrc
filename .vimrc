@@ -1,6 +1,5 @@
 set nocompatible
 
-
 filetype off
 let mapleader=';'
 nnoremap <left> <C-w>h
@@ -9,7 +8,8 @@ nnoremap <up> <C-w>k
 nnoremap <down> <C-w>j
 nnoremap <leader>ss :%s/
 inoremap jk <esc>
-imap <leader>[ <esc>o{
+inoremap <c-}> <Plug>(copilot-prev)
+inoremap <c-]> <Plug>(copilot-next)
 imap <F5> <esc><F5>
 inoremap <leader>a <esc>A
 xnoremap <leader>; :Commentary<CR>
@@ -24,6 +24,10 @@ autocmd FileType java inoremap <silent> <C-p> System.out.println();<Esc>hi
 autocmd FileType typst let g:AutoPairs['$']='$'
 autocmd FileType typst let g:AutoPairs['*']='*'
 autocmd FileType typst nnoremap <F5> :w<CR>:silent!clear<CR>:silent!!echo "compiling..."<CR>:!typst compile % && evince %:r.pdf &<CR>
+autocmd FileType markdown let g:AutoPairs['$']='$'
+autocmd FileType markdown let g:AutoPairs['*']='*'
+autocmd FileType markdown let g:AutoPairs['`']='`'
+
 xnoremap <Tab> >gv
 xnoremap <S-Tab> <gv
 nnoremap Q  gqap
@@ -51,6 +55,7 @@ nnoremap <leader>k :FloatermKill<CR>
 let g:floaterm_keymap_toggle = '<F12>'
 let g:floaterm_width = 0.8
 let g:floaterm_height = 0.8
+let g:tex_flavor = 'latex'
 " 使用 Tab 键补全
 " let g:AutoPairsMapCR = 0  " 禁用自动绑定 <CR> 键，手动管理
 " inoremap <expr> <CR> pumvisible() ? coc#_select_confirm() : <C-R>=AutoPairsReturn()<CR>
@@ -104,6 +109,9 @@ set signcolumn=yes
 command! CopilotP vsplit | Copilot panel
 imap <silent><script><expr> <C-j> copilot#Accept("\<CR>")
 imap <C-l> <Plug>(copilot-accept-word)
+inoremap <silent><expr><c-k> coc#refresh()
+
+let g:coc_global_extensions = ['coc-copilot']
 let g:copilot_no_tab_map = v:true
 
 
@@ -126,7 +134,6 @@ inoremap <silent><expr> <up>
 " <C-g>u breaks current undo, please make your own choice
 inoremap <silent><expr> <TAB> coc#pum#visible() ? coc#pum#confirm():
 								\ "\<TAB>" 
-
 
 " \ CheckBackspace() ? "\<Tab>" :
 
@@ -287,6 +294,8 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-surround'
+Plugin 'SirVer/ultisnips'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'kaarmu/typst.vim'
 Plugin 'neoclide/coc.nvim', {'branch': 'master'}
@@ -301,7 +310,28 @@ Plugin 'voldikss/vim-floaterm'
 Plugin 'ilyachur/cmake4vim'
 Plugin 'nixprime/cpsm'
 Plugin 'liuchengxu/vim-which-key'
-" let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+Plugin 'lervag/vimtex', { 'tag': 'v2.15' }
+Plugin 'honza/vim-snippets'
+
+"vimtex
+let g:vimtex_view_method='zathura'
+let g:vimtex_compiler_method='latexmk'
+
+"snippets
+let g:UltiSnipsExpandTrigger="<leader>"
+let g:UltiSnipsJumpForwardTrigger="<c-j>"
+let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+
+
+"CocInstall coc-json coc-tsserver coc-html coc-css coc-yaml coc-python coc-clangd coc-cmake coc-explorer coc-webview coc-snippets coc-markdown-preview-enhanced
+
+
+nnoremap <silent> <leader>md :CocCommand markdown-preview-enhanced.openPreview<cr>
+
+
+
+
+"let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 " if has('nvim')
 "   function! UpdateRemotePlugins(...)
 "     " Needed to refresh runtime files
@@ -333,7 +363,9 @@ Plugin 'weirongxu/coc-explorer'
 "coc-explorer
 nmap <F3> :CocCommand explorer<CR>
 autocmd BufEnter * if (winnr("$") == 1 && &filetype == 'coc-explorer') | q | endif
-autocmd VimEnter * if !argc() | CocCommand explorer
+autocmd VimEnter * if !argc() | call timer_start(200, {-> execute('CocCommand explorer')}) | endif
+
+
 
 "floaterm
 nnoremap git :FloatermNew lazygit<CR>
@@ -393,8 +425,8 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 
 
 " 映射切换buffer的键位
-nnoremap <c-[> :bp<CR>
-nnoremap <c-]> :bn<CR>
+nnoremap <leader>[ :bp<CR>
+nnoremap <leader>] :bn<CR>
 nnoremap <leader>w :bd<CR>
 " 映射<leader>num到num buffer
 map <leader>1 :b 1<CR>
