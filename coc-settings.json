@@ -1,0 +1,45 @@
+{
+	"languageserver": {
+		"typst": {
+			"command": "typst-lsp",
+			"filetypes": ["typst"]
+		},
+		"cmake": {
+			"command": "cmake-language-server",
+			"filetypes": ["cmake"],
+			"rootPatterns": [
+				"build/",
+				"CMakeLists.txt",
+				".git/",
+			],
+			"initializationOptions": {
+				"buildDirectory": "${workspace}/build"
+			}
+		},
+		"efm": {
+			"command": "efm-langserver",
+			"args": [],
+			// custom config path
+			// "args": ["-c", "/path/to/your/config.yaml"],
+			"filetypes": ["vim", "eruby", "markdown"]
+		}
+	},
+
+	"python.venvPath": "~/anaconda3/envs/myenv/bin/python",
+
+	"coc.source.vimtex.filetypes": [
+		"tex",
+		"plaintex",
+		"latex",
+		"markdown"
+	],
+
+	"explorer.width":25,
+	"explorer.icon.enableNerdfont": true,
+	"explorer.previewAction.onHover": false,
+	"explorer.git.enable": true,
+	"explorer.root.strategies": ["keep", "workspace", "reveal"],
+	"explorer.keyMappings.global": {
+		"o": "open:vsplit",
+	},
+}
