@@ -19,6 +19,9 @@ inoremap . .<c-g>u
 inoremap ; ;<c-g>u
 nnoremap <leader>/ :Ag<cr>
 
+vnoremap <C-j> :m '>+1<CR>gv=gv
+vnoremap <C-k> :m '<-2<CR>gv=gv
+
 autocmd BufNewFile,BufRead *.html set filetype=html
 autocmd FileType java inoremap <silent> <C-p> System.out.println();<Esc>hi
 autocmd FileType typst let g:AutoPairs['$']='$'
@@ -44,7 +47,7 @@ xnoremap J 5j
 xnoremap K 5k
 nnoremap H 0
 xnoremap H 0
-nnoremap <C-o> o<Esc>
+nnoremap <M-o> o<Esc>
 inoremap <C-o> <Esc>o
 inoremap <C-l> <Right>
 inoremap <C-u> <esc>gUiwea
@@ -312,13 +315,21 @@ Plugin 'nixprime/cpsm'
 Plugin 'liuchengxu/vim-which-key'
 Plugin 'lervag/vimtex', { 'tag': 'v2.15' }
 Plugin 'honza/vim-snippets'
+Plugin 'frazrepo/vim-rainbow'
+Plugin 'Yggdroot/indentLine'
+
+let g:indentLine_color_term = 239
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+let g:indentLine_enabled = 1
+
+let g:rainbow_active = 1
 
 "vimtex
 let g:vimtex_view_method='zathura'
 let g:vimtex_compiler_method='latexmk'
 
 "snippets
-let g:UltiSnipsExpandTrigger="<leader>"
+let g:UltiSnipsExpandTrigger="<C-;>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
@@ -441,13 +452,17 @@ map <leader>9 :b 9<CR>
 
 
 " vim-scripts 中的插件 "
-Plugin 'taglist.vim'
+" Plugin 'taglist.vim'
+Plugin 'preservim/tagbar'
 "ctags 配置:F3快捷键显示程序中的各种tags，包括变量和函数等。
-map <F2> :TlistToggle<CR>
-let Tlist_Use_Right_Window=1
-let Tlist_Show_One_File=1
-let Tlist_Exit_OnlyWindow=1
-let Tlist_WinWidt=15
+" map <F2> :TlistToggle<CR>
+map <F2> :TagbarToggle<CR>
+let g:tagbar_width=25
+
+" let Tlist_Use_Right_Window=1
+" let Tlist_Show_One_File=1
+" let Tlist_Exit_OnlyWindow=1
+" let Tlist_WinWidt=15
  
 "Plugin 'The-NERD-tree'
 ""NERDTree 配置:F2快捷键显示当前目录树
@@ -671,8 +686,9 @@ inoremap <C-z> <Esc>ui
 " 映射全选+复制 ctrl+a
 map <C-A> ggVG
 map! <C-A> <Esc>ggVG
-map <leader>= gg=G
-" 选中状态下 Ctrl+c 复制
+map <leader>= :CocCommand prettier.formatFile<CR>
+" map <leader>= gg=G
+"" 选中状态下 Ctrl+c 复制
 vmap <C-c> "+y
 
 
@@ -1034,6 +1050,104 @@ else
 endif
 
 
+" SearchComplete.vim
+" Author: Chris Russell
+" Version: 1.1
+" License: GPL v2.0 
+" 
+" Description:
+" This script defineds functions and key mappings for Tab completion in 
+" searches.
+" 
+" Help:
+" This script catches the <Tab> character when using the '/' search 
+" command.  Pressing Tab will expand the current partial word to the 
+" next matching word starting with the partial word.
+" 
+" If you want to match a tab, use the '\t' pattern.
+"
+" Installation:
+" Simply drop this file into your $HOME/.vim/plugin directory.
+" 
+" Changelog:
+" 2002-11-08 v1.1
+" 	Convert to unix eol
+" 2002-11-05 v1.0
+" 	Initial release
+" 
+" TODO:
+" 
 
+
+"--------------------------------------------------
+" Avoid multiple sourcing
+"-------------------------------------------------- 
+if exists( "loaded_search_complete" )
+    finish
+endif
+let loaded_search_complete = 1
+
+
+"--------------------------------------------------
+" Key mappings
+"-------------------------------------------------- 
+noremap / :call SearchCompleteStart()<CR>/
+
+
+"--------------------------------------------------
+" Set mappings for search complete
+"-------------------------------------------------- 
+function! SearchCompleteStart()
+	cnoremap <Tab> <C-C>:call SearchComplete()<CR>/<C-R>s
+	cnoremap <silent> <CR> <CR>:call SearchCompleteStop()<CR>
+	cnoremap <silent> <Esc> <C-C>:call SearchCompleteStop()<CR>
+endfunction
+
+"--------------------------------------------------
+" Tab completion in / search
+"-------------------------------------------------- 
+function! SearchComplete()
+	" get current cursor position
+	let l:loc = col( "." ) - 1
+	" get partial search and delete
+	let l:search = histget( '/', -1 )
+	call histdel( '/', -1 )
+	" check if new search
+	if l:search == @s
+		" get root search string
+		let l:search = b:searchcomplete
+		" increase number of autocompletes
+		let b:searchcompletedepth = b:searchcompletedepth . "\<C-N>"
+	else
+		" one autocomplete
+		let b:searchcompletedepth = "\<C-N>"
+	endif
+	" store origional search parameter
+	let b:searchcomplete = l:search
+	" set paste option to disable indent options
+	let l:paste = &paste
+	setlocal paste
+	" on a temporary line put search string and use autocomplete
+	execute "normal! A\n" . l:search . b:searchcompletedepth
+	" get autocomplete result
+	let @s = getline( line( "." ) )
+	" undo and return to first char
+	execute "normal! u0"
+	" return to cursor position
+	if l:loc > 0
+		execute "normal! ". l:loc . "l"
+	endif
+	" reset paste option
+	let &paste = l:paste
+endfunction
+
+"--------------------------------------------------
+" Remove search complete mappings
+"-------------------------------------------------- 
+function! SearchCompleteStop()
+	cunmap <Tab>
+	cunmap <CR>
+	cunmap <Esc>
+endfunction
 
 
