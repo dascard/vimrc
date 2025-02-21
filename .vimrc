@@ -56,6 +56,8 @@ nnoremap <leader>k :FloatermKill<CR>
 
 
 let g:floaterm_keymap_toggle = '<F12>'
+let g:floaterm_keymap_new = '<leader>ft'
+let g:floaterm_autoclose = 1
 let g:floaterm_width = 0.8
 let g:floaterm_height = 0.8
 let g:tex_flavor = 'latex'
@@ -283,6 +285,7 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent><nowait> <space>t  :<C-u>CocList tasks<cr>
 
 
 
@@ -317,6 +320,8 @@ Plugin 'lervag/vimtex', { 'tag': 'v2.15' }
 Plugin 'honza/vim-snippets'
 Plugin 'frazrepo/vim-rainbow'
 Plugin 'Yggdroot/indentLine'
+Plugin 'skywind3000/asyncrun.vim'
+Plugin 'skywind3000/asynctasks.vim'
 
 let g:indentLine_color_term = 239
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
@@ -870,7 +875,7 @@ endfunction
 
 
 " 将 F6 键映射为编译并运行测试
-nnoremap <F6> :CompileAndRunTest<CR>
+" nnoremap <F6> :CompileAndRunTest<CR>
 
 " 错误和警告处理
 set makeprg=javac\ -d\ output\ -cp\ ~/junit/junit-4.13.2.jar:~/junit/hamcrest-core-1.3.jar:.
@@ -886,7 +891,7 @@ autocmd FileType c,cpp nnoremap <buffer> <F5> :call Compilec()<CR>
 autocmd FileType java nnoremap <buffer> <F5> :call CompileJ()<CR>
 
 autocmd FileType python nnoremap <F5> :w<cr>:!printf "\033[H\033[2J"<cr>:!python3 %<cr>
-autocmd FileType python nnoremap <F6> :w<cr>:!printf "\033[H\033[2J"<cr>:!python3 -m ipdb %<cr>
+" autocmd FileType python nnoremap <F6> :w<cr>:!printf "\033[H\033[2J"<cr>:!python3 -m ipdb %<cr>
 
 
 
@@ -1048,6 +1053,16 @@ else
 	set background=dark
 
 endif
+
+
+" asynctasks
+let g:asyncrun_open = 10
+let g:asyncrun_rootmarks = ['.git', '.svn', '.root', '.project', '.hg']
+let g:asyncrun_save = 2
+noremap <silent><f6> :AsyncTask file-build<cr>
+noremap <silent><f7> :AsyncTask file-run<cr>
+noremap <silent><f8> :AsyncTask file-build-run<cr>
+let g:asynctasks_term_pos = 'right'
 
 
 " SearchComplete.vim
