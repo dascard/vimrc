@@ -1,27 +1,16 @@
 {
   "configurations": {
-    "cpp:launch": {
-      "adapter": "vscode-cpptools",
+    "cpp,c,rust:launch": {
+      "adapter": "codelldb",
+      "filetypes": ["cpp", "c", "rust"],
       "configuration": {
-        "name": "cpp",
-        "type": "cppdbg",
         "request": "launch",
         "program": "${fileDirname}/output/${fileBasenameNoExtension}",
         "cwd": "${workspaceRoot}",
         "environment": [],
         "externalConsole": true,
         "stopAtEntry": true,
-        "MIMode": "gdb",
-        "setupCommands": [
-          {
-            "description": "Enable pretty-printing for gdb",
-            "text": "-enable-pretty-printing",
-            "ignoreFailures": true
-          }
-        ],
-        "logging": {
-          "engineLogging": false
-        }
+        "MIMode": "lldb"
       }
     },
     "python:launch": {
@@ -33,8 +22,8 @@
         "program": "${file}",
         "console": "integratedTerminal",
         "justMyCode": false,
-		"stopOnEntry": true,
-		"cwd": "${workspaceRoot}"
+        "stopOnEntry": true,
+        "cwd": "${workspaceRoot}"
       }
     }
   }
