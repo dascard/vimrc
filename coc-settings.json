@@ -1,38 +1,376 @@
 {
-	"languageserver": {
-		"typst": {
-			"command": "typst-lsp",
-			"filetypes": ["typst"]
-		},
-		"cmake": {
-			"command": "cmake-language-server",
-			"filetypes": ["cmake"],
-			"rootPatterns": [
-				"build/",
-				"CMakeLists.txt",
-				".git/",
-			],
-			"initializationOptions": {
-				"buildDirectory": "${workspace}/build"
-			}
-		}
-	},
-
-	"python.venvPath": "~/anaconda3/envs/myenv/bin/python",
-
-	"coc.source.vimtex.filetypes": [
-		"tex",
-		"plaintex",
-		"latex",
-		"markdown"
-	],
-
-	"explorer.width":25,
-	"explorer.icon.enableNerdfont": true,
-	"explorer.previewAction.onHover": false,
-	"explorer.git.enable": true,
-	"explorer.root.strategies": ["keep", "workspace", "reveal"],
-	"explorer.keyMappings.global": {
-		"o": "open:vsplit",
-	},
+  "languageserver": {
+    "typst": {
+      "command": "typst-lsp",
+      "filetypes": ["typst"],
+      "settings": {
+        "exportPdf": "onSave"
+      }
+    },
+    "cmake": {
+      "command": "cmake-language-server",
+      "filetypes": ["cmake"],
+      "rootPatterns": [
+        "build/",
+        "CMakeLists.txt",
+        ".git/"
+      ],
+      "initializationOptions": {
+        "buildDirectory": "${workspace}/build"
+      }
+    },
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh", "bash"],
+      "ignoredRootPaths": ["~"]
+    },
+    "go": {
+      "command": "gopls",
+      "filetypes": ["go"],
+      "rootPatterns": ["go.mod", ".git/"],
+      "settings": {
+        "gopls": {
+          "gofumpt": true,
+          "staticcheck": true,
+          "usePlaceholders": true
+        }
+      }
+    },
+    "rust-analyzer": {
+      "command": "rust-analyzer",
+      "filetypes": ["rust"],
+      "rootPatterns": ["Cargo.toml", ".git/"],
+      "settings": {
+        "rust-analyzer": {
+          "assist": {
+            "importGranularity": "module",
+            "importPrefix": "by_self"
+          },
+          "cargo": {
+            "loadOutDirsFromCheck": true
+          },
+          "procMacro": {
+            "enable": true
+          },
+          "checkOnSave": {
+            "command": "clippy"
+          }
+        }
+      }
+    },
+    "julia": {
+      "command": "julia",
+      "args": [
+        "--startup-file=no",
+        "--history-file=no",
+        "-e",
+        "using LanguageServer; runserver()"
+      ],
+      "filetypes": ["julia"],
+      "rootPatterns": ["Project.toml", ".git/"]
+    },
+    "lua": {
+      "command": "lua-language-server",
+      "filetypes": ["lua"],
+      "rootPatterns": [".git/"]
+    },
+    "intelephense": {
+      "command": "intelephense",
+      "args": ["--stdio"],
+      "filetypes": ["php"],
+      "initializationOptions": {
+        "storagePath": "/tmp/intelephense"
+      }
+    },
+    "solargraph": {
+      "command": "solargraph",
+      "args": ["stdio"],
+      "filetypes": ["ruby"],
+      "rootPatterns": ["Gemfile", ".git/"],
+      "settings": {
+        "solargraph": {
+          "diagnostics": true
+        }
+      }
+    },
+    "r": {
+      "command": "R",
+      "args": ["--slave", "-e", "languageserver::run()"],
+      "filetypes": ["r", "rmd"],
+      "rootPatterns": [".git/"]
+    },
+    "dart": {
+      "command": "dart",
+      "args": ["language-server", "--protocol=lsp"],
+      "filetypes": ["dart"],
+      "rootPatterns": ["pubspec.yaml", ".git/"]
+    },
+    "swift": {
+      "command": "sourcekit-lsp",
+      "filetypes": ["swift"],
+      "rootPatterns": ["Package.swift", ".git/"]
+    },
+    "kotlin": {
+      "command": "kotlin-language-server",
+      "filetypes": ["kotlin"],
+      "rootPatterns": ["build.gradle", "build.gradle.kts", ".git/"]
+    },
+    "metals": {
+      "command": "metals",
+      "filetypes": ["scala", "sbt"],
+      "rootPatterns": ["build.sbt", "build.sc", ".git/"],
+      "initializationOptions": {
+        "statusBarProvider": "show-message"
+      }
+    },
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": ["--lsp"],
+      "filetypes": ["haskell", "lhaskell"],
+      "rootPatterns": ["*.cabal", "stack.yaml", "cabal.project", "package.yaml", ".git/"]
+    },
+    "ocaml": {
+      "command": "ocamllsp",
+      "filetypes": ["ocaml", "reason"],
+      "rootPatterns": ["dune-project", "dune-workspace", ".git/"]
+    },
+    "elm": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json", ".git/"]
+    },
+    "zls": {
+      "command": "zls",
+      "filetypes": ["zig"],
+      "rootPatterns": ["build.zig", ".git/"]
+    },
+    "dockerfile": {
+      "command": "docker-langserver",
+      "args": ["--stdio"],
+      "filetypes": ["dockerfile"]
+    },
+    "yaml": {
+      "command": "yaml-language-server",
+      "args": ["--stdio"],
+      "filetypes": ["yaml", "yml"],
+      "settings": {
+        "yaml": {
+          "schemas": {
+            "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*"
+          }
+        }
+      }
+    },
+    "xml": {
+      "command": "lemminx",
+      "args": [],
+      "filetypes": ["xml", "xsd", "xsl", "xslt", "svg"]
+    }
+  },
+  "python.defaultInterpreter": "python3",
+  "python.venvPath": "~/anaconda3/envs/myenv/bin/python",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.formatting.provider": "black",
+  "python.sortImports.provider": "isort",
+  "typescript.preferences.includePackageJsonAutoImports": "on",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "java.home": "/usr/lib/jvm/default-java",
+  "java.import.gradle.enabled": true,
+  "java.import.maven.enabled": true,
+  "java.configuration.checkProjectSettingsExclusions": false,
+  "clangd.path": "clangd",
+  "clangd.arguments": [
+    "--header-insertion=iwyu",
+    "--completion-style=detailed",
+    "--function-arg-placeholders",
+    "--fallback-style=google"
+  ],
+  "rust-analyzer.cargo.loadOutDirsFromCheck": true,
+  "rust-analyzer.procMacro.enable": true,
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "go.goplsOptions": {
+    "staticcheck": true,
+    "gofumpt": true
+  },
+  "prettier.semi": true,
+  "prettier.singleQuote": true,
+  "prettier.tabWidth": 2,
+  "prettier.trailingComma": "es5",
+  "prettier.printWidth": 100,
+  "eslint.autoFixOnSave": true,
+  "eslint.filetypes": [
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "javascriptreact"
+  ],
+  "coc.source.vimtex.filetypes": [
+    "tex",
+    "plaintex",
+    "latex",
+    "markdown"
+  ],
+  "latex.build.executable": "latexmk",
+  "latex.build.args": [
+    "-pdf",
+    "-interaction=nonstopmode",
+    "-synctex=1",
+    "%f"
+  ],
+  "latex.forwardSearch.executable": "zathura",
+  "latex.forwardSearch.args": [
+    "--synctex-forward",
+    "%l:1:%f",
+    "%p"
+  ],
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.git.enable": true,
+  "explorer.git.showIgnored": false,
+  "explorer.root.strategies": ["keep", "workspace", "reveal"],
+  "explorer.keyMappings.global": {
+    "o": "open:vsplit",
+    "s": "open:split",
+    "t": "open:tab",
+    "<cr>": ["expandable?", "expand", "open"],
+    "v": "open:vsplit"
+  },
+  "explorer.file.showHiddenFiles": true, 
+  "explorer.file.hiddenRules": {
+    "extensions": ["o", "a", "obj", "pyc"],
+    "filenames": [".DS_Store", ".git", "__pycache__"],
+    "patternMatches": ["^\\."]
+  },
+  "list.indicator": "→",
+  "list.selectedSignText": "✓",
+  "list.maxHeight": 20,
+  "suggest.noselect": false,
+  "suggest.enablePreview": true,
+  "suggest.maxCompleteItemCount": 50,
+  "suggest.timeout": 5000,
+  "suggest.detailField": "preview",
+  "suggest.snippetIndicator": "►",
+  "suggest.completionItemKindLabels": {
+    "keyword": "\uf1de",
+    "variable": "\ue79b",
+    "value": "\uf89f",
+    "operator": "\u03a8",
+    "constructor": "\uf0ad",
+    "function": "\u0192",
+    "reference": "\ufa46",
+    "constant": "\uf8fe",
+    "method": "\uf09a",
+    "struct": "\ufb44",
+    "class": "\uf0e8",
+    "interface": "\uf417",
+    "text": "\ue612",
+    "enum": "\uf435",
+    "enumMember": "\uf02b",
+    "module": "\uf40d",
+    "color": "\ue22b",
+    "property": "\ue624",
+    "field": "\uf9be",
+    "unit": "\uf475",
+    "event": "\ufacd",
+    "file": "\uf723",
+    "folder": "\uf114",
+    "snippet": "\ue60b",
+    "typeParameter": "\uf728",
+    "default": "\uf29c"
+  },
+  "diagnostic.enable": true,
+  "diagnostic.level": "hint",
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.refreshOnInsertMode": false,
+  "diagnostic.displayByAle": false,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextPrefix": "■ ",
+  "diagnostic.signOffset": 9999999,
+  "codeLens.enable": true,
+  "codeLens.separator": "‣",
+  "snippets.ultisnips.enable": true,
+  "snippets.ultisnips.directories": [
+    "UltiSnips",
+    "~/.vim/UltiSnips"
+  ],
+  "git.enableGutters": true,
+  "git.branchCharacter": "\uf418",
+  "git.addGBlameToBufferVar": true,
+  "git.addGBlameToVirtualText": true,
+  "git.virtualTextPrefix": " ‣ ",
+  "git.changeRemovedSign.text": "_",
+  "git.changeRemovedSign.hlGroup": "GitGutterChangeRemoved",
+  "git.topRemovedSign.text": "‾",
+  "git.topRemovedSign.hlGroup": "GitGutterTopRemoved",
+  "git.removedSign.text": "_",
+  "git.removedSign.hlGroup": "GitGutterRemoved",
+  "git.changedSign.text": "~",
+  "git.changedSign.hlGroup": "GitGutterChanged",
+  "git.addedSign.text": "+",
+  "git.addedSign.hlGroup": "GitGutterAdded",
+  "workspace.ignoredFiletypes": [
+    "markdown",
+    "log",
+    "txt",
+    "help"
+  ],
+  "notification.statusLineProgress": false,
+  "notification.disabledProgressSources": ["*"],
+  "session.saveOnVimLeave": false,
+  "yank.enableCompletion": true,
+  "yank.priority": 10,
+  "coc.preferences.hoverTarget": "float",
+  "coc.preferences.colorSupport": true,
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "markdown",
+    "javascript",
+    "typescript",
+    "typescriptreact",
+    "json",
+    "javascriptreact",
+    "typescript.tsx",
+    "graphql",
+    "rust",
+    "python",
+    "go"
+  ],
+  "documentHighlight.timeout": 500,
+  "outline.keepWindow": true,
+  "outline.autoPreview": true,
+  "signature.enable": true,
+  "signature.target": "float",
+  "signature.maxWindowHeight": 8,
+  "hover.target": "float",
+  "html.filetypes": ["html", "handlebars", "htmldjango", "blade"],
+  "css.validate": true,
+  "scss.validate": true,
+  "less.validate": true,
+  "json.enable": true,
+  "json.schemas": [
+    {
+      "fileMatch": ["package.json"],
+      "url": "https://schemastore.azurewebsites.net/schemas/json/package.json"
+    },
+    {
+      "fileMatch": ["tsconfig*.json"],
+      "url": "https://schemastore.azurewebsites.net/schemas/json/tsconfig.json"
+    }
+  ],
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "typescript": "typescriptreact"
+  },
+  "task.enable": true,
+  "terminal.integrated.shell.linux": "/bin/zsh"
 }

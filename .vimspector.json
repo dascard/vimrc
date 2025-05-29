@@ -1,16 +1,13 @@
 {
   "configurations": {
     "cpp,c,rust:launch": {
-      "adapter": "codelldb",
+      "adapter": "CodeLLDB",
       "filetypes": ["cpp", "c", "rust"],
       "configuration": {
         "request": "launch",
         "program": "${fileDirname}/output/${fileBasenameNoExtension}",
         "cwd": "${workspaceRoot}",
-        "environment": [],
-        "externalConsole": true,
-        "stopAtEntry": true,
-        "MIMode": "lldb"
+        "stopOnEntry": true
       }
     },
     "python:launch": {
